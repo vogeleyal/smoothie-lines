@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <canvas id="smoothieLineCanvas" height="200" width="323"></canvas>
+
+    <script type="text/javascript" src="./lib/smoothie.js"></script>
+    <script>
+      var smoothie
+      const HIGH_THRESHOLD = 0.8;
+      const LOW_THRESHOLD = 0.2;
+      const RED = 'rgb(255, 0, 0)';
+      const GREEN = 'rgb(0, 255, 0)';
+      const DEFAULT = 'rgb(0, 0, 255)';
+
+      function init() {
+        // Create the chart and connect it to the Canvas
+        smoothie = new SmoothieChart({
+          grid : {
+            millisPerLine: 1000,
+            verticalSections: 10
+          }
+        });
+        smoothie.streamTo(document.getElementById('smoothieLineCanvas'), 1000);
+        // Create a line
+        let smoothieLine = new TimeSeries({resetBounds: false});
+
+        // Each 1000ms tick update the value of the line
+        var value = Math.random();
+        setInterval(() => {
+          let time = new Date().getTime();
+          smoothieLine.append(time, value)
+
+          // Determine the current stroke color (chart is delayed by 1000ms)
+          // so this tick controlls the last tick's line color
+          let strokeStyle = DEFAULT;
+          if (value > HIGH_THRESHOLD) {
+            strokeStyle = RED;
+          }
+          else if (value < LOW_THRESHOLD) {
+            strokeStyle = GREEN;
+          }
+
+          // Updating the line's color
+          let ops = smoothie.getTimeSeriesOptions(smoothieLine);
+          ops.strokeStyle = strokeStyle;
+
+          // Get new value
+          value = Math.random();
+        }, 1000);
+
+        // Default blue line
+        smoothie.addTimeSeries(smoothieLine, {
+          strokeStyle:'rgb(0, 0, 255)',
+          lineWidth:3
+        })
+      }
+
+      init();
+    </script>
+  </body>
+</html>
