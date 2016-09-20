@@ -24,17 +24,17 @@
         });
         smoothie.streamTo(document.getElementById('smoothieLineCanvas'), 1000);
         // Create a line
-        let smoothieLine = new TimeSeries({resetBounds: false});
+        var smoothieLine = new TimeSeries({resetBounds: false});
 
         // Each 1000ms tick update the value of the line
         var value = Math.random();
         setInterval(() => {
-          let time = new Date().getTime();
+          var time = new Date().getTime();
           smoothieLine.append(time, value)
 
           // Determine the current stroke color (chart is delayed by 1000ms)
           // so this tick controlls the last tick's line color
-          let strokeStyle = DEFAULT;
+          var strokeStyle = DEFAULT;
           if (value > HIGH_THRESHOLD) {
             strokeStyle = RED;
           }
@@ -43,7 +43,7 @@
           }
 
           // Updating the line's color
-          let ops = smoothie.getTimeSeriesOptions(smoothieLine);
+          var ops = smoothie.getTimeSeriesOptions(smoothieLine);
           ops.strokeStyle = strokeStyle;
 
           // Get new value
