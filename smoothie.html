@@ -28,7 +28,7 @@
 
         // Each 1000ms tick update the value of the line
         var value = Math.random();
-        setInterval(() => {
+        setInterval(function () {
           var time = new Date().getTime();
           smoothieLine.append(time, value)
 
